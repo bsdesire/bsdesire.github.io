@@ -6,80 +6,70 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@5.0.0/dist/umd/material.min.css">
     <!-- Include Material Icons from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons-font/material-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #121212; /* Dark background color */
-        color: #ffffff; /* Light text color */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50vh;
-    }
-    .form-container {
-        background-color: #1f1f1f; /* Darker container background color */
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-        width: 800px;
-        text-align: center;
-    }
-    /* Additional dark mode styles for input and button */
-    input, button {
-        background-color: #333333; /* Dark input/button background color */
-        color: #ffffff; /* Light text color */
-        border: none;
-        padding: 8px;
-        border-radius: 4px;
-        margin: 6px 0;
-    }
-    .alert {
-        position: fixed;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 10px 20px;
-        border-radius: 4px;
-        z-index: 1000;
-    }
-
-    .success {
-        background-color: #2ecc71; /* Green background color */
-        color: white; /* Light text color */
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    /* Adjust styles for smaller screens */
-    @media (max-width: 600px) {
-        body {
-            align-items: flex-start; /* Align content to the top */
-            padding: 1rem; /* Add padding to the body */
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
         }
         .form-container {
-            width: 100%; /* Take up the full width of the viewport */
-            box-shadow: none; /* Remove box shadow for mobile */
+            background-color: #1f1f1f;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px; /* Limit width on larger screens */
+            text-align: center;
         }
         input, button {
-            width: 100%; /* Take up the full width of the container */
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 6px 0;
+            width: calc(100% - 16px); /* Consider padding and border width */
         }
-    }
-    </style>
+        .alert {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            position: sticky;
+            top: 10px;
+            z-index: 1; /* Ensure alert is on top */
+            display: none;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+        }
+        </style>
 </head>
 <body>
     <div class="form-container">
-        <h1>The Cherry Express 🍒</h1>
+        <h3>The Cherry Express 🍒</h3>
         <form id="messageForm">
             <label for="message">Message:</label>
             <input type="text" id="message" name="message" required>
             <button type="submit">Send</button>
         </form>
+        <div id="successAlert" class="alert">
+            Message Sent!
+        </div>
     </div>
 
     <script>
-         const successAlert = document.createElement("div");
-    successAlert.classList.add("alert", "success");
-    successAlert.textContent = "Message Sent!";
+         const successAlert = document.getElementById("successAlert");
 
     document.getElementById("messageForm").addEventListener("submit", function(event) {
         event.preventDefault();
@@ -111,11 +101,10 @@
     });
 
     function showSuccessAlert() {
-        document.body.appendChild(successAlert);
-
-        setTimeout(() => {
-            document.body.removeChild(successAlert);
-        }, 4000);
+        successAlert.style.display = "block";
+            setTimeout(() => {
+                successAlert.style.display = "none";
+            }, 3000);
     }
     </script>
 </body>
