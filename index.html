@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discord Webhook Sender</title>
+</head>
+<body>
+    <h1>Send Message to Discord Webhook</h1>
+    <form id="messageForm">
+        <label for="message">Message:</label>
+        <input type="text" id="message" name="message" required>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <script>
+        document.getElementById("messageForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const webhookUrl = "YOUR_DISCORD_WEBHOOK_URL";
+            const message = document.getElementById("message").value;
+
+            const data = {
+                content: message
+            };
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                console.log("Message sent successfully!");
+            })
+            .catch(error => {
+                console.error("Error sending message:", error);
+            });
+        });
+    </script>
+</body>
+</html>
