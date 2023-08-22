@@ -2,43 +2,121 @@
 <html>
 <head>
     <title>Discord Webhook Sender</title>
+    <!-- Include Material-UI CSS from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@5.0.0/dist/umd/material.min.css">
+    <!-- Include Material Icons from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons-font/material-icons.css">
+    <style>
+        body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #121212; /* Dark background color */
+        color: #ffffff; /* Light text color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+    }
+    .form-container {
+        background-color: #1f1f1f; /* Darker container background color */
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        width: 800px;
+        text-align: center;
+    }
+    /* Additional dark mode styles for input and button */
+    input, button {
+        background-color: #333333; /* Dark input/button background color */
+        color: #ffffff; /* Light text color */
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        margin: 6px 0;
+    }
+    .alert {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        border-radius: 4px;
+        z-index: 1000;
+    }
+
+    .success {
+        background-color: #2ecc71; /* Green background color */
+        color: white; /* Light text color */
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    /* Adjust styles for smaller screens */
+    @media (max-width: 600px) {
+        body {
+            align-items: flex-start; /* Align content to the top */
+            padding: 1rem; /* Add padding to the body */
+        }
+        .form-container {
+            width: 100%; /* Take up the full width of the viewport */
+            box-shadow: none; /* Remove box shadow for mobile */
+        }
+        input, button {
+            width: 100%; /* Take up the full width of the container */
+        }
+    }
+    </style>
 </head>
 <body>
-    <h1>Send Message to Discord Webhook</h1>
-    <form id="messageForm">
-        <label for="message">Message:</label>
-        <input type="text" id="message" name="message" required>
-        <button type="submit">Send Message</button>
-    </form>
+    <div class="form-container">
+        <h1>The Cherry Express 🍒</h1>
+        <form id="messageForm">
+            <label for="message">Message:</label>
+            <input type="text" id="message" name="message" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
 
     <script>
-        document.getElementById("messageForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+         const successAlert = document.createElement("div");
+    successAlert.classList.add("alert", "success");
+    successAlert.textContent = "Message Sent";
 
-            const webhookUrl = "https://discord.com/api/webhooks/1143572559628075010/9N3gE7znKMG6pvEaye2-2SgX7B62CDdJviCK7CxCBoFU2PLTvscdOT2EHLb5kkeYNvDR";
-            const message = document.getElementById("message").value;
+    document.getElementById("messageForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-            const data = {
-                content: message
-            };
+        const webhookUrl = "https://discord.com/api/webhooks/1143572559628075010/9N3gE7znKMG6pvEaye2-2SgX7B62CDdJviCK7CxCBoFU2PLTvscdOT2EHLb5kkeYNvDR";
+        const message = document.getElementById("message").value;
 
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                console.log("Message sent successfully!");
-            })
-            .catch(error => {
-                console.error("Error sending message:", error);
-            });
+        const data = {
+            content: message
+        };
+
+        fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            showSuccessAlert();
+            document.getElementById("message").value = "";
+        })
+        .catch(error => {
+            console.error("Error sending message:", error);
         });
+    });
+
+    function showSuccessAlert() {
+        document.body.appendChild(successAlert);
+
+        setTimeout(() => {
+            document.body.removeChild(successAlert);
+        }, 4000);
+    }
     </script>
 </body>
 </html>
